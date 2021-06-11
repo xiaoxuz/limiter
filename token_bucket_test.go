@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func TestRun(t *testing.T) {
+func TestTB(t *testing.T) {
 	tb := NewTokenBucket(&TbConfig{
 		QPS:    10,
 		MaxCap: 20,
@@ -19,7 +19,7 @@ func TestRun(t *testing.T) {
 		for i := 0; i < cnt; i++ {
 			go func() {
 				defer wg.Done()
-				if err := tb.Take(1); err != nil {
+				if err := tb.Take(); err != nil {
 					atomic.AddInt64(&unpass, 1)
 				} else {
 					atomic.AddInt64(&pass, 1)

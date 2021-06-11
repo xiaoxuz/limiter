@@ -14,7 +14,7 @@ type TokenBucket struct {
 	*TbConfig
 	m          sync.Mutex
 	available  int64
-	latestTime time.Time
+	lastTime time.Time
 }
 
 var _ Limiter = &TokenBucket{}
@@ -24,18 +24,18 @@ func NewTokenBucket(c *TbConfig) Limiter {
 		TbConfig:   c,
 		m:          sync.Mutex{},
 		available:  c.QPS,
-		latestTime: time.Now(),
+		lastTime: time.Now(),
 	}
 }
 
-func (tb *TokenBucket) Take(cnt int64) error {
+func (tb *TokenBucket) Take() error {
 	tb.m.Lock()
 	defer tb.m.Unlock()
 
 	tb.fill()
 
-	if cnt <= tb.available {
-		tb.available -= cnt
+	if 1 <= tb.available {
+		tb.available -= 1
 		return nil
 	}
 
@@ -66,7 +66,7 @@ func (tb *TokenBucket) Cnt() int64 {
 
 func (tb *TokenBucket) fill() error {
 	n := time.Now()
-	timeUnit := n.Sub(tb.latestTime).Seconds()
+	timeUnit := n.Sub(tb.lastTime).Seconds()
 
 	fillCnt := int64(timeUnit) * tb.QPS
 	if fillCnt <= 0 {
@@ -79,6 +79,6 @@ func (tb *TokenBucket) fill() error {
 		tb.available = tb.MaxCap
 	}
 
-	tb.latestTime = n
+	tb.lastTime = n
 	return nil
 }

@@ -3,8 +3,8 @@ package limiter
 import "errors"
 
 type Limiter interface {
-	Take(int64) error
-	fill() error
+	Take() error
+	Cnt() int64
 }
 
 var (
