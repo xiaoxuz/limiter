@@ -43,7 +43,7 @@ lb := NewLeakyBucket(&LbConfig{
 
 
 ### 更多信息
-![avatar](https://github.com/xiaoxuz/fql/blob/master/wechat.jpg)
+![avatar](https://github.com/xiaoxuz/limiter/blob/main/wechat.png)
 
   
 
