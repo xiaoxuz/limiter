@@ -12,19 +12,19 @@ type TbConfig struct {
 
 type TokenBucket struct {
 	*TbConfig
-	m          sync.Mutex
-	available  int64
-	lastTime time.Time
+	m         sync.Mutex
+	available int64
+	lastTime  time.Time
 }
 
 var _ Limiter = &TokenBucket{}
 
 func NewTokenBucket(c *TbConfig) Limiter {
 	return &TokenBucket{
-		TbConfig:   c,
-		m:          sync.Mutex{},
-		available:  c.QPS,
-		lastTime: time.Now(),
+		TbConfig:  c,
+		m:         sync.Mutex{},
+		available: c.QPS,
+		lastTime:  time.Now(),
 	}
 }
 
